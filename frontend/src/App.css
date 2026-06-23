@@ -1,0 +1,177 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  background: #f5f3ff;
+  color: #111827;
+}
+
+.page {
+  padding: 28px;
+}
+
+.header {
+  background: white;
+  border-radius: 18px;
+  padding: 24px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.header p {
+  color: #6b7280;
+  margin: 8px 0 0;
+}
+
+.badge {
+  background: #ede9fe;
+  color: #5b21b6;
+  padding: 14px 18px;
+  border-radius: 14px;
+  font-weight: 700;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+}
+
+.sidebar,
+.content {
+  background: white;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.sidebar h2 {
+  margin-top: 0;
+  color: #5b21b6;
+}
+
+.sidebar label {
+  display: block;
+  margin-top: 18px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd6fe;
+  border-radius: 10px;
+  outline: none;
+}
+
+.info {
+  margin-top: 32px;
+  background: #f3e8ff;
+  padding: 18px;
+  border-radius: 14px;
+  color: #4c1d95;
+}
+
+.info p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.contentTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.contentTop h2 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.contentTop p {
+  color: #6b7280;
+}
+
+.grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.card {
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 18px;
+  min-height: 190px;
+  background: #fff;
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+}
+
+.card span {
+  font-size: 12px;
+  color: #6d28d9;
+  font-weight: 700;
+}
+
+.card h3 {
+  margin: 12px 0 8px;
+  font-size: 17px;
+}
+
+.card .id {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.card strong {
+  display: block;
+  margin-top: 14px;
+  font-size: 18px;
+}
+
+.card small {
+  display: block;
+  margin-top: 14px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.footer {
+  margin-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer button {
+  background: #6d28d9;
+  color: white;
+  border: none;
+  padding: 14px 22px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.footer button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
