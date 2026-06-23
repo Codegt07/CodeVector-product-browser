@@ -11,10 +11,7 @@ connectDB();
 
 const app = express();
 
-app.use(cors({
-  origin: "https://codevector-product-browser-1-blkp.onrender.com",
-  credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
