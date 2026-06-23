@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import "./App.css";
 
 const API_URL = "https://codevector-product-browser-oycb.onrender.com";
@@ -23,40 +22,42 @@ export default function App() {
   const [nextCursor, setNextCursor] = useState(null);
   const [loading, setLoading] = useState(false);
 
- const fetchProducts = async (cursor = null) => {
-  try {
-    setLoading(true);
+  const fetchProducts = async (cursor = null) => {
+    try {
+      setLoading(true);
 
-    let url = `${API_URL}?limit=${limit}`;
+      let url = `${API_URL}?limit=${limit}`;
 
-    if (category !== "All") {
-      url += `&category=${category}`;
+      if (category !== "All") {
+        url += `&category=${category}`;
+      }
+
+      if (cursor) {
+        url += `&cursor=${encodeURIComponent(cursor)}`;
+      }
+
+      const response = await fetch(url);
+      const data = await response.json();
+
+      const fetchedProducts = Array.isArray(data.products)
+        ? data.products
+        : [];
+
+      if (cursor) {
+        setProducts((prev) => [...prev, ...fetchedProducts]);
+      } else {
+        setProducts(fetchedProducts);
+      }
+
+      setNextCursor(data.nextCursor || null);
+    } catch (error) {
+      console.error("Fetch products error:", error);
+      setProducts([]);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    if (cursor) {
-      url += `&cursor=${encodeURIComponent(cursor)}`;
-    }
-
-    const res = await axios.get(url);
-
-    const fetchedProducts = Array.isArray(res.data.products)
-      ? res.data.products
-      : [];
-
-    if (cursor) {
-      setProducts((prev) => [...prev, ...fetchedProducts]);
-    } else {
-      setProducts(fetchedProducts);
-    }
-
-    setNextCursor(res.data.nextCursor || null);
-  } catch (error) {
-    console.error("Fetch products error:", error);
-    setProducts([]);
-  } finally {
-    setLoading(false);
-  }
-};
   useEffect(() => {
     setNextCursor(null);
     fetchProducts();
@@ -67,12 +68,9 @@ export default function App() {
       <header className="header">
         <div>
           <h1>Product Browser</h1>
-          <p>Browse 200,000 products with category filters and cursor pagination.</p>
+          <p>Browse 200,000 products with filters and cursor pagination.</p>
         </div>
-
-        <div className="badge">
-          200,000+ Products
-        </div>
+        <div className="badge">200,000+ Products</div>
       </header>
 
       <main className="layout">
@@ -91,14 +89,14 @@ export default function App() {
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={50}>50</option>
-            <option value={100}>100</option>          
+            <option value={100}>100</option>
           </select>
 
           <div className="info">
-            <h3>How it works</h3>
+            <h3>Cursor Pagination</h3>
             <p>
-              This UI uses cursor pagination. New products can be inserted while browsing,
-              and the next page still continues from the last product seen.
+              The next page continues from the last product seen, preventing
+              duplicates when new products are added.
             </p>
           </div>
         </aside>
@@ -111,19 +109,23 @@ export default function App() {
             </div>
           </div>
 
-          <div className="grid">
-            {products.map((product) => (
-              <div className="card" key={product._id}>
-                <span>{product.category}</span>
-                <h3>{product.name}</h3>
-                <p className="id">{product.productId}</p>
-                <strong>₹{product.price}</strong>
-                <small>
-                  Updated: {new Date(product.updated_at).toLocaleString()}
-                </small>
-              </div>
-            ))}
-          </div>
+          {loading && products.length === 0 ? (
+            <p>Loading products...</p>
+          ) : (
+            <div className="grid">
+              {products.map((product) => (
+                <div className="card" key={product._id}>
+                  <span>{product.category}</span>
+                  <h3>{product.name}</h3>
+                  <p className="id">{product.productId}</p>
+                  <strong>₹{product.price}</strong>
+                  <small>
+                    Updated: {new Date(product.updated_at).toLocaleString()}
+                  </small>
+                </div>
+              ))}
+            </div>
+          )}
 
           <div className="footer">
             <p>Showing {products.length} products</p>
