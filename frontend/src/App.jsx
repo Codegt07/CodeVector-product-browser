@@ -23,36 +23,40 @@ export default function App() {
   const [nextCursor, setNextCursor] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const fetchProducts = async (cursor = null) => {
-    try {
-      setLoading(true);
+ const fetchProducts = async (cursor = null) => {
+  try {
+    setLoading(true);
 
-      let url = `${API_URL}?limit=${limit}`;
+    let url = `${API_URL}?limit=${limit}`;
 
-      if (category !== "All") {
-        url += `&category=${category}`;
-      }
-
-      if (cursor) {
-        url += `&cursor=${encodeURIComponent(cursor)}`;
-      }
-
-      const res = await axios.get(url);
-
-      if (cursor) {
-        setProducts((prev) => [...prev, ...res.data.products]);
-      } else {
-        setProducts(res.data.products);
-      }
-
-      setNextCursor(res.data.nextCursor);
-    } catch (error) {
-      console.error("Fetch products error:", error);
-    } finally {
-      setLoading(false);
+    if (category !== "All") {
+      url += `&category=${category}`;
     }
-  };
 
+    if (cursor) {
+      url += `&cursor=${encodeURIComponent(cursor)}`;
+    }
+
+    const res = await axios.get(url);
+
+    const fetchedProducts = Array.isArray(res.data.products)
+      ? res.data.products
+      : [];
+
+    if (cursor) {
+      setProducts((prev) => [...prev, ...fetchedProducts]);
+    } else {
+      setProducts(fetchedProducts);
+    }
+
+    setNextCursor(res.data.nextCursor || null);
+  } catch (error) {
+    console.error("Fetch products error:", error);
+    setProducts([]);
+  } finally {
+    setLoading(false);
+  }
+};
   useEffect(() => {
     setNextCursor(null);
     fetchProducts();
